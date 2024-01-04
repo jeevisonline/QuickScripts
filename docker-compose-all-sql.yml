@@ -1,0 +1,40 @@
+version: '3.1'
+
+services:
+
+  postgresql:
+    image: docker.io/postgres:latest
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: always
+    environment:
+      POSTGRES_USER : ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_NAME}
+      
+  mysql:
+    image: docker.io/mysql:latest
+    volumes:
+      - ./mysql:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    restart: always
+    environment:
+      MYSQL_USER : ${DATABASE_USER}
+      MYSQL_PASSWORD: ${DATABASE_PASSWORD}
+      MYSQL_DATABASE: ${DATABASE_NAME}
+      MYSQL_ROOT_PASSWORD: ${DATABASE_PASSWORD}
+      
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2017-latest
+    #image: mcr.microsoft.com/mssql/server:2017-CU11-ubuntu
+    restart: always
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: ${DATABASE_PASSWORD}
+    ports:
+      - 1433:1433
+    volumes:
+      - ./mssql:/var/opt/mssql
